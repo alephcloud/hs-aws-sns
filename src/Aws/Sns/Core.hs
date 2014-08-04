@@ -1,5 +1,6 @@
 {-# LANGUAGE DeriveDataTypeable #-}
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE CPP #-}
 
 -- |
 -- Module: Aws.Sns.Core
@@ -349,7 +350,11 @@ snsSignQuery query conf sigData = SignedQuery
             headers
             (fromMaybe "" body)
 
+#if MIN_VERSION_aws(0,9,2)
+    cred2cred (Credentials a b c _) = SignatureV4Credentials a b c
+#else
     cred2cred (Credentials a b c) = SignatureV4Credentials a b c
+#endif
 
 -- -------------------------------------------------------------------------- --
 -- SNS Response Consumer
