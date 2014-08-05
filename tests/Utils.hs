@@ -1,6 +1,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE GADTs #-}
+{-# LANGUAGE CPP #-}
 
 -- |
 -- Module: Utils
@@ -140,7 +141,12 @@ test_jsonRoundtrip
     -> TestTree
 test_jsonRoundtrip proxy = testProperty msg (prop_jsonRoundtrip :: a -> Property)
   where
-    msg = "JSON roundtrip for " <> show (typeRep proxy)
+    msg = "JSON roundtrip for " <> show typ
+#if MIN_VERSION_base(4,7,0)
+    typ = typeRep proxy
+#else
+    typ = typeOf (undefined :: a)
+#endif
 
 prop_jsonRoundtrip :: forall a . (Eq a, Show a, FromJSON a, ToJSON a) => a -> Property
 prop_jsonRoundtrip a = either (const $ property False) (\(b :: [a]) -> [a] === b) $
