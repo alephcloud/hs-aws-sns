@@ -1,6 +1,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE GADTs #-}
+{-# LANGUAGE CPP #-}
 
 -- |
 -- Module: Main
@@ -384,13 +385,20 @@ prop_sqsSubscribePublishUnsubscribe topicArn queueId queueArn = do
     PublishResponse msgId0 <- simpleSnsT $ Publish msg Nothing (Just subj) (Left topicArn)
 
     -- receive messages
-    sqsMsg <- retryT 3 $ do
+#if MIN_VERSION_aws(100,0,0)
+    let numRetry = 3
+#else
+    let numRetry = 6
+#endif
+    sqsMsg <- retryT numRetry $ do
         SQS.ReceiveMessageResponse msgs <- simpleSqsT $ SQS.ReceiveMessage
             { SQS.rmVisibilityTimeout = Nothing
             , SQS.rmAttributes = []
             , SQS.rmMaxNumberOfMessages = Just 1
             , SQS.rmQueueName = queueId
+#if MIN_VERSION_aws(100,0,0)
             , SQS.rmWaitTimeSeconds = Just 20
+#endif
             }
         when (length msgs < 1) $ left
             $ "unexpected number of messages in queue; expected 1, got " <> sshow (length msgs)
