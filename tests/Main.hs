@@ -12,6 +12,9 @@
 --
 -- Tests for Haskell SNS bindings
 --
+module Main
+( main
+) where
 
 import Aws
 import Aws.Core
@@ -223,11 +226,6 @@ simpleSqsT
     -> EitherT T.Text m (MemoryResponse a)
 simpleSqsT = tryT . simpleSqs
 
--- |
---
--- Throws an exception if the URL returned by 'CreateQueue' doesn't
--- include the HTTP protocol or the account ID as first path component.
---
 withSqsQueue
     :: T.Text
     -- ^ queue name
@@ -248,11 +246,10 @@ withQueueTest
     :: T.Text -- ^ Queue name
     -> (IO (T.Text, SQS.QueueName, Arn) -> TestTree) -- ^ test tree
     -> TestTree
-withQueueTest queueName f = withResource createQueue deleteQueue $ \getQueueUrl -> do
-    let getQueueParams = do
-            url <- getQueueUrl
-            return (url, sqsQueueName url, testSqsArn url)
-    f getQueueParams
+withQueueTest queueName f = withResource createQueue deleteQueue $ \getQueueUrl ->
+    f $ do
+        url <- getQueueUrl
+        return (url, sqsQueueName url, testSqsArn url)
   where
     createQueue = do
         SQS.CreateQueueResponse url <- simpleSqs $ SQS.CreateQueue Nothing queueName
