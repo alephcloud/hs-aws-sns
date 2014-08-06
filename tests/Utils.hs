@@ -55,8 +55,6 @@ import Test.QuickCheck.Monadic
 import Test.Tasty
 import Test.Tasty.QuickCheck
 
-import System.IO
-
 -- -------------------------------------------------------------------------- --
 -- Static Test parameters
 --
