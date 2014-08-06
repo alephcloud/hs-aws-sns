@@ -106,7 +106,3 @@ test-suite SNS-tests
 
     ghc-options: -Wall -threaded
 
-
-
-
-
