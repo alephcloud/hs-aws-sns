@@ -96,32 +96,32 @@ evalTestTM
     :: Functor f
     => String -- ^ test name
     -> f (EitherT T.Text IO a) -- ^ test
-    -> f (IO Bool)
+    -> f (PropertyM IO Bool)
 evalTestTM name = fmap $
-    runEitherT >=> \r -> case r of
-        Left e -> do
-            hPutStrLn stderr $ "failed to run stream test \"" <> name <> "\": " <> show e
-            return False
+    (liftIO . runEitherT) >=> \r -> case r of
+        Left e ->
+            fail $ "failed to run test \"" <> name <> "\": " <> show e
         Right _ -> return True
 
 evalTestT
     :: String -- ^ test name
     -> EitherT T.Text IO a -- ^ test
-    -> IO Bool
+    -> PropertyM IO Bool
 evalTestT name = runIdentity . evalTestTM name . Identity
 
 eitherTOnceTest0
     :: String -- ^ test name
     -> EitherT T.Text IO a -- ^ test
     -> TestTree
-eitherTOnceTest0 name = testProperty name . once . ioProperty . evalTestT name
+eitherTOnceTest0 name test = testProperty name . once . monadicIO
+    $ evalTestT name test
 
 eitherTOnceTest1
     :: (Arbitrary a, Show a)
     => String -- ^ test name
     -> (a -> EitherT T.Text IO b)
     -> TestTree
-eitherTOnceTest1 name test = testProperty name . once $ monadicIO . liftIO
+eitherTOnceTest1 name test = testProperty name . once $ monadicIO
     . evalTestTM name test
 
 eitherTOnceTest2
@@ -129,7 +129,7 @@ eitherTOnceTest2
     => String -- ^ test name
     -> (a -> b -> EitherT T.Text IO c)
     -> TestTree
-eitherTOnceTest2 name test = testProperty name . once $ \a b -> monadicIO . liftIO
+eitherTOnceTest2 name test = testProperty name . once $ \a b -> monadicIO
     $ (evalTestTM name $ uncurry test) (a, b)
 
 -- -------------------------------------------------------------------------- --
