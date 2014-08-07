@@ -4,9 +4,12 @@
 
 Name: aws-sns
 Version: 0.1
-Synopsis: Bindings for AWS SNS Version 2013-03-31
+Synopsis: Bindings for Amazon Simple Notification Service (Amazon SNS)
 description:
-    Bindings for AWS SNS
+    Bindings for <http://aws.amazon.com/sns/ Amazon Simple Notification Service (Amazon SNS)>
+    .
+    Amazon Simple Notification Service (Amazon SNS) is a fast, flexible, fully
+    managed push messaging service.
     .
     /API Version: 2013-03-31/
     .

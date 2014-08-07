@@ -1,12 +1,12 @@
 [![Build Status](https://travis-ci.org/alephcloud/hs-aws-sns.svg?branch=master)](https://travis-ci.org/alephcloud/hs-aws-sns)
 
 
-Haskell Bindings for AWS SNS
-============================
+Haskell Bindings for [Amazon Simple Notification Service (Amazon SNS)](http://aws.amazon.com/sns/)
+==================================================================================================
 
 *API Version 2013-03-31*
 
-[Amazon AWS SNS API Reference](http://docs.aws.amazon.com/sns/2010-03-31/APIReference/Welcome.html)
+[Amazon Simple Notification Service API Reference](http://docs.aws.amazon.com/sns/2010-03-31/APIReference/Welcome.html)
 
 This package depends on the [aws-general](https://github.com/alephcloud/hs-aws-general) package
 and the [aws](https://github.com/aristidb/aws) package. From the latter the it borrows the
