@@ -19,8 +19,7 @@
 -- <http://docs.aws.amazon.com/sns/2010-03-31/api/API_GetSubscriptionAttributes.html>
 --
 module Aws.Sns.Commands.GetSubscriptionAttributes
-( SubscriptionAttributes(..)
-, GetSubscriptionAttributes(..)
+( GetSubscriptionAttributes(..)
 , GetSubscriptionAttributesResponse(..)
 , GetSubscriptionAttributesErrors(..)
 ) where
@@ -29,43 +28,19 @@ import Aws.Core
 import Aws.General
 import Aws.Sns.Internal
 import Aws.Sns.Core
+import Aws.Sns.Types
 
 import Control.Applicative
 import Control.Exception
 import Control.Monad.Trans.Resource (throwM)
 
-import qualified Data.Text as T
+import Data.Aeson
+import qualified Data.Text.Encoding as T
 import qualified Data.Traversable as TR
 import Data.Typeable
 
 import Text.XML.Cursor (($//), (&/))
 import qualified Text.XML.Cursor as CU
-
-type DeliveryPolicy = T.Text
-
--- | Subscription Attributes
---
--- <http://docs.aws.amazon.com/sns/2010-03-31/api/API_GetSubscriptionAttributes.html>
---
--- TODO find out which of the fields in the structure are optional and
--- which are required.
---
-data SubscriptionAttributes = SubscriptionAttributes
-    { subscriptionAttrSubscriptionArn :: !(Maybe Arn)
-    -- ^ the subscription's ARN
-    , subscriptionAttrTopicArn :: !(Maybe Arn)
-    -- ^ the topic ARN that the subscription is associated with
-    , subscriptionAttrOwner :: !(Maybe AccountId)
-    -- ^ the AWS account ID of the subscription's owner
-    , subscriptionAttrConfirmationWasAuthenticated :: !Bool
-    -- ^ 'True' if the subscription confirmation request was authenticated
-    , subscriptionAttrDeliveryPolicy :: !(Maybe DeliveryPolicy)
-    -- ^ the JSON serialization of the subscription's delivery policy
-    , subscriptionAttrEffectiveDeliveryPolicy :: !(Maybe DeliveryPolicy)
-    -- ^ the JSON serialization of the effective delivery policy that takes into
-    -- account the topic delivery policy and account system defaults
-    }
-    deriving (Show, Read, Eq, Ord, Typeable)
 
 -- -------------------------------------------------------------------------- --
 -- GetSubscriptionAttributes
@@ -77,12 +52,12 @@ data GetSubscriptionAttributes = GetSubscriptionAttributes
     { getSubscriptionAttributesSubscriptionArn :: !Arn
     -- ^ The ARN of the subscription whose properties you want to get.
     }
-    deriving (Show, Read, Eq, Ord, Typeable)
+    deriving (Show, Eq, Typeable)
 
 data GetSubscriptionAttributesResponse = GetSubscriptionAttributesResponse
     { getSubscriptionAttributesResAttributes :: !SubscriptionAttributes
     }
-    deriving (Show, Read, Eq, Ord, Typeable)
+    deriving (Show, Eq, Typeable)
 
 instance ResponseConsumer r GetSubscriptionAttributesResponse where
     type ResponseMetadata GetSubscriptionAttributesResponse = SnsMetadata
@@ -96,10 +71,11 @@ instance ResponseConsumer r GetSubscriptionAttributesResponse where
             fmapL (toException . XmlException) . fmap GetSubscriptionAttributesResponse $ SubscriptionAttributes
                 <$> TR.mapM fromText (lookup "SubscriptionArn" entries)
                 <*> TR.mapM fromText (lookup "TopicArn" entries)
-                <*> (pure $ fmap AccountId (lookup "Owner" entries))
+                <*> pure (fmap AccountId (lookup "Owner" entries))
                 <*> pure (maybe False (== "true") (lookup "ConfirmationWasAuthenticated" entries))
-                <*> pure (lookup "DeliveryPolicy" entries)
-                <*> pure (lookup "EffectiveDeliveryPolicy" entries)
+                <*> TR.mapM eitherDecodeText (lookup "DeliveryPolicy" entries)
+                <*> TR.mapM eitherDecodeText (lookup "EffectiveDeliveryPolicy" entries)
+        eitherDecodeText = eitherDecodeStrict . T.encodeUtf8
 
 instance SignQuery GetSubscriptionAttributes where
     type ServiceConfiguration GetSubscriptionAttributes = SnsConfiguration

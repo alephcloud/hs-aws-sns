@@ -51,6 +51,7 @@ Library
         Aws.Sns
         Aws.Sns.Internal
         Aws.Sns.Core
+        Aws.Sns.Types
         Aws.Sns.Policy
         Aws.Sns.Policy.Internal
         Aws.Sns.Commands.CreateTopic
