@@ -63,6 +63,7 @@ Library
         Aws.Sns.Commands.ConfirmSubscription
         Aws.Sns.Commands.ListSubscriptionsByTopic
         Aws.Sns.Commands.GetSubscriptionAttributes
+        Aws.Sns.Commands.SetTopicAttributes
 
     build-depends:
         QuickCheck >= 2.7,
