@@ -382,7 +382,7 @@ prop_sqsSubscribePublishUnsubscribe topicArn queueId queueArn = do
     PublishResponse msgId0 <- simpleSnsT $ Publish msg Nothing (Just subj) (Left topicArn)
 
     -- receive messages
-#if MIN_VERSION_aws(100,0,0)
+#if MIN_VERSION_aws(0,10,0)
     let numRetry = 3
 #else
     let numRetry = 6
@@ -393,7 +393,8 @@ prop_sqsSubscribePublishUnsubscribe topicArn queueId queueArn = do
             , SQS.rmAttributes = []
             , SQS.rmMaxNumberOfMessages = Just 1
             , SQS.rmQueueName = queueId
-#if MIN_VERSION_aws(100,0,0)
+#if MIN_VERSION_aws(0,10,0)
+            , SQS.rmUserMessageAttributes = []
             , SQS.rmWaitTimeSeconds = Just 20
 #endif
             }
