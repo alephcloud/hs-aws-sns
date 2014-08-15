@@ -241,6 +241,9 @@ instance ConditionKey s ⇒ FromJSON (ServicePolicy s) where
             <*> o .: "Id"
             <*> (map (\(ServiceStatement s ∷ ServiceStatement s) → s) <$> o .: "Statement")
 
+instance ConditionKey s ⇒ ToJSON (ServicePolicy s) where
+    toJSON (ServicePolicy p) = toJSON p
+
 -- -------------------------------------------------------------------------- --
 -- Statement
 
