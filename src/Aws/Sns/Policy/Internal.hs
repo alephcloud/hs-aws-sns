@@ -59,7 +59,6 @@ module Aws.Sns.Policy.Internal
 
 -- * Condition Key
 , ConditionKey(..)
-, Condition(..)
 , SomeConditionKey(..)
 
 -- * AWS Condition Key
