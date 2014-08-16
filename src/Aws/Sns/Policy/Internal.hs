@@ -458,7 +458,7 @@ deriving instance Typeable SomeConditionKey
 instance Ord SomeConditionKey where
     compare (SomeConditionKey a) (SomeConditionKey b) = case cast a of
         Just a_ → compare a_ b
-        Nothing → compare (typeRep a) (typeRep b)
+        Nothing → compare (typeOf a) (typeOf b)
 
 instance Eq SomeConditionKey where
     a == b = compare a b == EQ
@@ -676,156 +676,156 @@ instance Ord Condition where
     -- String
     compare (StringEquals a0 b0) (StringEquals a1 b1) = case cast a0 of
         Just a0_ → compare (a0_, b0) (a1, b1)
-        Nothing → compare (typeRep a0, b0) (typeRep a1, b1)
+        Nothing → compare (typeOf a0, b0) (typeOf a1, b1)
     compare StringEquals{} _ = GT
     compare _ StringEquals{} = LT
 
     compare (StringNotEquals a0 b0) (StringNotEquals a1 b1) = case cast a0 of
         Just a0_ → compare (a0_, b0) (a1, b1)
-        Nothing → compare (typeRep a0, b0) (typeRep a1, b1)
+        Nothing → compare (typeOf a0, b0) (typeOf a1, b1)
     compare StringNotEquals{} _ = GT
     compare _ StringNotEquals{} = LT
 
     compare (StringEqualsI a0 b0) (StringEqualsI a1 b1) = case cast a0 of
         Just a0_ → compare (a0_, b0) (a1, b1)
-        Nothing → compare (typeRep a0, b0) (typeRep a1, b1)
+        Nothing → compare (typeOf a0, b0) (typeOf a1, b1)
     compare StringEqualsI{} _ = GT
     compare _ StringEqualsI{} = LT
 
     compare (StringNotEqualsI a0 b0) (StringNotEqualsI a1 b1) = case cast a0 of
         Just a0_ → compare (a0_, b0) (a1, b1)
-        Nothing → compare (typeRep a0, b0) (typeRep a1, b1)
+        Nothing → compare (typeOf a0, b0) (typeOf a1, b1)
     compare StringNotEqualsI{} _ = GT
     compare _ StringNotEqualsI{} = LT
 
     compare (StringLike a0 b0) (StringLike a1 b1) = case cast a0 of
         Just a0_ → compare (a0_, b0) (a1, b1)
-        Nothing → compare (typeRep a0, b0) (typeRep a1, b1)
+        Nothing → compare (typeOf a0, b0) (typeOf a1, b1)
     compare StringLike{} _ = GT
     compare _ StringLike{} = LT
 
     compare (StringNotLike a0 b0) (StringNotLike a1 b1) = case cast a0 of
         Just a0_ → compare (a0_, b0) (a1, b1)
-        Nothing → compare (typeRep a0, b0) (typeRep a1, b1)
+        Nothing → compare (typeOf a0, b0) (typeOf a1, b1)
     compare StringNotLike{} _ = GT
     compare _ StringNotLike{} = LT
 
     -- Numeric
     compare (NumericEquals a0 b0) (NumericEquals a1 b1) = case cast a0 of
         Just a0_ → compare (a0_, b0) (a1, b1)
-        Nothing → compare (typeRep a0, b0) (typeRep a1, b1)
+        Nothing → compare (typeOf a0, b0) (typeOf a1, b1)
     compare NumericEquals{} _ = GT
     compare _ NumericEquals{} = LT
 
     compare (NumericNotEquals a0 b0) (NumericNotEquals a1 b1) = case cast a0 of
         Just a0_ → compare (a0_, b0) (a1, b1)
-        Nothing → compare (typeRep a0, b0) (typeRep a1, b1)
+        Nothing → compare (typeOf a0, b0) (typeOf a1, b1)
     compare NumericNotEquals{} _ = GT
     compare _ NumericNotEquals{} = LT
 
     compare (NumericLessThan a0 b0) (NumericLessThan a1 b1) = case cast a0 of
         Just a0_ → compare (a0_, b0) (a1, b1)
-        Nothing → compare (typeRep a0, b0) (typeRep a1, b1)
+        Nothing → compare (typeOf a0, b0) (typeOf a1, b1)
     compare NumericLessThan{} _ = GT
     compare _ NumericLessThan{} = LT
 
     compare (NumericLessThanEquals a0 b0) (NumericLessThanEquals a1 b1) = case cast a0 of
         Just a0_ → compare (a0_, b0) (a1, b1)
-        Nothing → compare (typeRep a0, b0) (typeRep a1, b1)
+        Nothing → compare (typeOf a0, b0) (typeOf a1, b1)
     compare NumericLessThanEquals{} _ = GT
     compare _ NumericLessThanEquals{} = LT
 
     compare (NumericGreaterThan a0 b0) (NumericGreaterThan a1 b1) = case cast a0 of
         Just a0_ → compare (a0_, b0) (a1, b1)
-        Nothing → compare (typeRep a0, b0) (typeRep a1, b1)
+        Nothing → compare (typeOf a0, b0) (typeOf a1, b1)
     compare NumericGreaterThan{} _ = GT
     compare _ NumericGreaterThan{} = LT
 
     compare (NumericGreaterThanEquals a0 b0) (NumericGreaterThanEquals a1 b1) = case cast a0 of
         Just a0_ → compare (a0_, b0) (a1, b1)
-        Nothing → compare (typeRep a0, b0) (typeRep a1, b1)
+        Nothing → compare (typeOf a0, b0) (typeOf a1, b1)
     compare NumericGreaterThanEquals{} _ = GT
     compare _ NumericGreaterThanEquals{} = LT
 
     -- Date
     compare (DateEquals a0 b0) (DateEquals a1 b1) = case cast a0 of
         Just a0_ → compare (a0_, b0) (a1, b1)
-        Nothing → compare (typeRep a0, b0) (typeRep a1, b1)
+        Nothing → compare (typeOf a0, b0) (typeOf a1, b1)
     compare DateEquals{} _ = GT
     compare _ DateEquals{} = LT
 
     compare (DateNotEquals a0 b0) (DateNotEquals a1 b1) = case cast a0 of
         Just a0_ → compare (a0_, b0) (a1, b1)
-        Nothing → compare (typeRep a0, b0) (typeRep a1, b1)
+        Nothing → compare (typeOf a0, b0) (typeOf a1, b1)
     compare DateNotEquals{} _ = GT
     compare _ DateNotEquals{} = LT
 
     compare (DateLessThan a0 b0) (DateLessThan a1 b1) = case cast a0 of
         Just a0_ → compare (a0_, b0) (a1, b1)
-        Nothing → compare (typeRep a0, b0) (typeRep a1, b1)
+        Nothing → compare (typeOf a0, b0) (typeOf a1, b1)
     compare DateLessThan{} _ = GT
     compare _ DateLessThan{} = LT
 
     compare (DateLessThanEquals a0 b0) (DateLessThanEquals a1 b1) = case cast a0 of
         Just a0_ → compare (a0_, b0) (a1, b1)
-        Nothing → compare (typeRep a0, b0) (typeRep a1, b1)
+        Nothing → compare (typeOf a0, b0) (typeOf a1, b1)
     compare DateLessThanEquals{} _ = GT
     compare _ DateLessThanEquals{} = LT
 
     compare (DateGreaterThan a0 b0) (DateGreaterThan a1 b1) = case cast a0 of
         Just a0_ → compare (a0_, b0) (a1, b1)
-        Nothing → compare (typeRep a0, b0) (typeRep a1, b1)
+        Nothing → compare (typeOf a0, b0) (typeOf a1, b1)
     compare DateGreaterThan{} _ = GT
     compare _ DateGreaterThan{} = LT
 
     compare (DateGreaterThanEquals a0 b0) (DateGreaterThanEquals a1 b1) = case cast a0 of
         Just a0_ → compare (a0_, b0) (a1, b1)
-        Nothing → compare (typeRep a0, b0) (typeRep a1, b1)
+        Nothing → compare (typeOf a0, b0) (typeOf a1, b1)
     compare DateGreaterThanEquals{} _ = GT
     compare _ DateGreaterThanEquals{} = LT
 
     -- Boolean
     compare (Boolean a0 b0) (Boolean a1 b1) = case cast a0 of
         Just a0_ → compare (a0_, b0) (a1, b1)
-        Nothing → compare (typeRep a0, b0) (typeRep a1, b1)
+        Nothing → compare (typeOf a0, b0) (typeOf a1, b1)
     compare Boolean{} _ = GT
     compare _ Boolean{} = LT
 
     -- IpAddress
     compare (IpAddress a0 b0) (IpAddress a1 b1) = case cast a0 of
         Just a0_ → compare (a0_, b0) (a1, b1)
-        Nothing → compare (typeRep a0, b0) (typeRep a1, b1)
+        Nothing → compare (typeOf a0, b0) (typeOf a1, b1)
     compare IpAddress{} _ = GT
     compare _ IpAddress{} = LT
 
     compare (NotIpAddress a0 b0) (NotIpAddress a1 b1) = case cast a0 of
         Just a0_ → compare (a0_, b0) (a1, b1)
-        Nothing → compare (typeRep a0, b0) (typeRep a1, b1)
+        Nothing → compare (typeOf a0, b0) (typeOf a1, b1)
     compare NotIpAddress{} _ = GT
     compare _ NotIpAddress{} = LT
 
     -- Arn
     compare (ArnEquals a0 b0) (ArnEquals a1 b1) = case cast a0 of
         Just a0_ → compare (a0_, b0) (a1, b1)
-        Nothing → compare (typeRep a0, b0) (typeRep a1, b1)
+        Nothing → compare (typeOf a0, b0) (typeOf a1, b1)
     compare ArnEquals{} _ = GT
     compare _ ArnEquals{} = LT
 
     compare (ArnNotEquals a0 b0) (ArnNotEquals a1 b1) = case cast a0 of
         Just a0_ → compare (a0_, b0) (a1, b1)
-        Nothing → compare (typeRep a0, b0) (typeRep a1, b1)
+        Nothing → compare (typeOf a0, b0) (typeOf a1, b1)
     compare ArnNotEquals{} _ = GT
     compare _ ArnNotEquals{} = LT
 
     compare (ArnLike a0 b0) (ArnLike a1 b1) = case cast a0 of
         Just a0_ → compare (a0_, b0) (a1, b1)
-        Nothing → compare (typeRep a0, b0) (typeRep a1, b1)
+        Nothing → compare (typeOf a0, b0) (typeOf a1, b1)
     compare ArnLike{} _ = GT
     compare _ ArnLike{} = LT
 
     compare (ArnNotLike a0 b0) (ArnNotLike a1 b1) = case cast a0 of
         Just a0_ → compare (a0_, b0) (a1, b1)
-        Nothing → compare (typeRep a0, b0) (typeRep a1, b1)
+        Nothing → compare (typeOf a0, b0) (typeOf a1, b1)
     compare ArnNotLike{} _ = GT
     compare _ ArnNotLike{} = LT
 
