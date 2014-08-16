@@ -77,3 +77,27 @@ instance ConditionKey SnsConditionKey
 
 type SnsPolicy = ServicePolicy SnsConditionKey
 
+{-
+-- -------------------------------------------------------------------------- --
+-- Policy Action
+
+-- | TODO
+--
+data SnsPolicyAction
+    = SnsPolicyActionAny
+    | SnsPolicyAction [SnsAction]
+    deriving (Show, Read, Eq, Ord, Typeable)
+
+instance ToJSON SnsPolicyAction where
+    toJSON SnsPolicyActionAny = toJSON ["*"]
+    toJSON (SnsPolicyAction l) = toJSON l
+
+instance FromJSON SnsPolicyAction where
+    parseJSON = withArray "Action" $ V.foldM f (SnsPolicyAction [])
+      where
+        f SnsPolicyActionAny _ = return SnsPolicyActionAny
+        f (SnsPolicyAction t) x = withText "SnsAction" $ \case
+            "*" → pure SnsPolicyActionAny
+            x → SnsPolicyAction . (:t) <$> parseJSON x
+-}
+

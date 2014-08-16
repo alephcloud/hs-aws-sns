@@ -306,27 +306,6 @@ instance FromJSON Principal where
 -- TODO replace this with a typeclass
 type PolicyAction = T.Text
 
-{-
--- | TODO
---
-data SnsPolicyAction
-    = SnsPolicyActionAny
-    | SnsPolicyAction [SnsAction]
-    deriving (Show, Read, Eq, Ord, Typeable)
-
-instance ToJSON SnsPolicyAction where
-    toJSON SnsPolicyActionAny = toJSON ["*"]
-    toJSON (SnsPolicyAction l) = toJSON l
-
-instance FromJSON SnsPolicyAction where
-    parseJSON = withArray "Action" $ V.foldM f (SnsPolicyAction [])
-      where
-        f SnsPolicyActionAny _ = return SnsPolicyActionAny
-        f (SnsPolicyAction t) x = withText "SnsAction" $ \case
-            "*" → pure SnsPolicyActionAny
-            x → SnsPolicyAction . (:t) <$> parseJSON x
--}
-
 -- | Each statement includes the core information about a single permission. If
 -- a policy includes multiple statements, we apply a logical OR across the
 -- statements at evaluation time. If multiple policies are applicable to a
