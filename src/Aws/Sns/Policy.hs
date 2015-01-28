@@ -11,6 +11,7 @@
 {-# LANGUAGE DataKinds #-}
 {-# LANGUAGE StandaloneDeriving #-}
 {-# LANGUAGE GADTs #-}
+{-# LANGUAGE CPP #-}
 
 -- |
 -- Module: Aws.Sns.Policy
@@ -24,26 +25,42 @@
 -- <http://docs.aws.amazon.com/sns/latest/dg/AccessPolicyLanguage_SpecialInfo.html>
 --
 module Aws.Sns.Policy
-( SnsConditionKey(..)
-, SnsPolicy
+( SnsPolicy
+
+#if ! UNTYPED_POLICY
+, SnsConditionKey(..)
+#endif
 
 -- TODO reexport everything that is needed to write and parse SNS Policies
 ) where
 
+import Data.Aeson
+
+#if ! UNTYPED_POLICY
 import Aws.General
 import Aws.Sns.Policy.Internal
 
 import Control.Applicative
 
-import Data.Aeson
 import Data.Typeable
 
 import Text.Parser.Combinators
 import Text.Parser.Char
+#endif
+
+-- -------------------------------------------------------------------------- --
+-- SNS Policy
+
+#if UNTYPED_POLICY
+type SnsPolicy = Value
+#else
+type SnsPolicy = ServicePolicy SnsConditionKey
+#endif
 
 -- -------------------------------------------------------------------------- --
 -- SNS Policy Key
 
+#if ! UNTYPED_POLICY
 data SnsConditionKey (a ∷ AwsConditionType) where
     SNSProtocol ∷ SnsConditionKey AwsString
     SNSEndpoint ∷ SnsConditionKey AwsString
@@ -71,11 +88,7 @@ instance Typeable a ⇒ FromJSON (SnsConditionKey a) where
         $ either fail return . fromText
 
 instance ConditionKey SnsConditionKey
-
--- -------------------------------------------------------------------------- --
--- SNS Policy
-
-type SnsPolicy = ServicePolicy SnsConditionKey
+#endif
 
 {-
 -- -------------------------------------------------------------------------- --
