@@ -216,7 +216,6 @@ data Policy = Policy
     , policyId ∷ !PolicyId
     , policyStatement ∷ ![Statement]
     }
-    -- deriving (Show, Eq, Ord, Typeable)
     deriving (Show, Eq, Ord, Typeable)
 
 instance ToJSON Policy where
@@ -378,7 +377,6 @@ data Statement = Statement
     , statementCondition ∷ ![Condition]
     -- ^ conditions are joined via /and/
     }
-    -- deriving (Show, Eq, Ord, Typeable, Generic)
     deriving (Show, Eq, Ord, Typeable)
 
 instance ToJSON Statement where
