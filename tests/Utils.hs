@@ -96,7 +96,7 @@ evalTestTM
     -> f (EitherT T.Text IO a) -- ^ test
     -> f (PropertyM IO Bool)
 evalTestTM name = fmap $
-    (liftIO . runEitherT) >=> \r -> case r of
+    (run . runEitherT) >=> \r -> case r of
         Left e ->
             fail $ "failed to run test \"" <> name <> "\": " <> show e
         Right _ -> return True
