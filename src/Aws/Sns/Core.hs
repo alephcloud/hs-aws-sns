@@ -351,9 +351,9 @@ snsSignQuery query conf sigData = SignedQuery
             (fromMaybe "" body)
 
 #if MIN_VERSION_aws(0,9,2)
-    cred2cred (Credentials a b c _) = SignatureV4Credentials a b c
+    cred2cred (Credentials a b c _) = SignatureV4Credentials a b c Nothing
 #else
-    cred2cred (Credentials a b c) = SignatureV4Credentials a b c
+    cred2cred (Credentials a b c) = SignatureV4Credentials a b c Nothing
 #endif
 
 -- -------------------------------------------------------------------------- --
