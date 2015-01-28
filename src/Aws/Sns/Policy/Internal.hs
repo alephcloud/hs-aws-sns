@@ -446,7 +446,7 @@ instance Show SomeConditionKey where
     show (SomeConditionKey k) = show k
 
 class
-    (Typeable k
+    ( Typeable k
     , FromJSON (k 'AwsString)
     , FromJSON (k 'AwsNumeric)
     , FromJSON (k 'AwsDateTime)
