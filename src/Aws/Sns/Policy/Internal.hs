@@ -123,17 +123,17 @@ instance AwsType IPAddress where
     parse = many anyChar >>= either fail return . readEither
 
 instance ToJSON IPAddress where
-    toJSON = toJSON . (toText ∷ IPAddress → T.Text)
+    toJSON = toJSON . (Aws.General.toText ∷ IPAddress → T.Text)
 
 instance FromJSON IPAddress where
     parseJSON = withText "IPAddress"
-        $ either fail return . fromText
+        $ either fail return . Aws.General.fromText
 
 instance ToJSON AccountId where
-    toJSON = toJSON . (toText ∷ AccountId → T.Text)
+    toJSON = toJSON . (Aws.General.toText ∷ AccountId → T.Text)
 
 instance FromJSON AccountId where
-    parseJSON = withText "AccountId" $ either fail return . fromText
+    parseJSON = withText "AccountId" $ either fail return . Aws.General.fromText
 
 -- -------------------------------------------------------------------------- --
 -- Policy
@@ -593,7 +593,7 @@ instance Typeable a ⇒ AwsType (AwsConditionKey a) where
 
 instance Typeable a ⇒ FromJSON (AwsConditionKey a) where
     parseJSON = withText "SnsConditionKey"
-        $ either fail return . fromText
+        $ either fail return . Aws.General.fromText
 
 instance ConditionKey AwsConditionKey
 
